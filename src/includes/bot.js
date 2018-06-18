@@ -5,11 +5,28 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 class Bot {
-    constructor (config) {
+    constructor(config) {
         this.config = config;
 
         client.on('ready', () => {
             console.log('I am ready!');
+
+            let channels = client.channels;
+
+            channels.forEach(channel => {
+                if (channel.type === 'text') {
+                    let perms = channel.permissionsFor(client.user)
+                    if (perms.has('SEND_MESSAGES')) {
+                        console.log('posting to', channel.guild.name, channel.name);
+                        channel.send('Hello, danbooru bot here!')
+                        .catch(err => {
+                            console.log('Error posting to', channel.guild.name, '#' + channel.name, ":", err.message);
+                        });                    
+                    } else {
+                        console.log('No permission to post in', channel.guild.name, channel.name)
+                    }
+                }
+            })
         });
 
         // Create an event listener for messages
@@ -42,3 +59,5 @@ class Bot {
 
     // }
 }
+
+module.exports = Bot;
