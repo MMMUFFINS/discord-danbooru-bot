@@ -1,5 +1,8 @@
 {
-  "danbooru_api_key":"your_key_here",
+  "secrets": {
+    "discord": "your_key_here",
+    "danbooru":"your_key_here"
+  },
   "tags":[
     "tag1",
     "tag2"

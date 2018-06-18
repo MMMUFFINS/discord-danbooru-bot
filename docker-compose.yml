@@ -1,0 +1,7 @@
+version: '2'
+services:
+  bot:
+      build: .
+      image: mmmuffins/discord-danbooru-bot:0.1.0
+      volumes:
+          - ./config.json:/usr/src/app/config.json
