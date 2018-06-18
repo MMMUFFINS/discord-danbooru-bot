@@ -13,20 +13,29 @@ class Bot {
 
             let channels = client.channels;
 
+            // greet each channel
             channels.forEach(channel => {
                 if (channel.type === 'text') {
-                    let perms = channel.permissionsFor(client.user)
-                    if (perms.has('SEND_MESSAGES')) {
-                        console.log('posting to', channel.guild.name, channel.name);
-                        channel.send('Hello, danbooru bot here!')
-                        .catch(err => {
-                            console.log('Error posting to', channel.guild.name, '#' + channel.name, ":", err.message);
-                        });                    
-                    } else {
-                        console.log('No permission to post in', channel.guild.name, channel.name)
-                    }
+                    channel.guild.fetchMember(client.user)
+                    .then(selfInGuild => {
+                        let nickInGuild = selfInGuild.nickname;
+                        let perms = channel.permissionsFor(client.user);
+                        
+                        if (perms.has('SEND_MESSAGES')) {
+                            console.log('posting to', channel.guild.name, channel.name);
+    
+                            return channel.send('Hello, ' + nickInGuild + ' here!')
+                            .catch(err => {
+                                return Promise.reject('Error posting to ' + channel.guild.name + ' #' + channel.name + ": " + err.message);
+                            });
+                        } else {
+                            console.log('No permission to post in', channel.guild.name, channel.name);
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
                 }
-            })
+            });  
         });
 
         // Create an event listener for messages
