@@ -1,0 +1,7 @@
+{
+  "danbooru_api_key":"your_key_here",
+  "tags":[
+    "tag1",
+    "tag2"
+  ]
+}
